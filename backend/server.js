@@ -11,8 +11,8 @@
     const app = express();
 
          //request localhost:5000/api/milestone on postman and respond with message array 
-    app.get('/api/milestone', (req, res) => {
-        res.status(200).json({message : 'Message recieved'})  
-      });
+         //points to routers for request
+    app.use('/api/milestone',require('./routes/milestoneRoutes'));
+    
          //run server and output port name
     app.listen(port, () => console.log(`Server is running on ${port}`));
