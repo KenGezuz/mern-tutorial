@@ -2,8 +2,8 @@
     const express = require('express');
         //file to hide private content 
     const dotenv = require('dotenv').config();
-        //Access port 
-    const port = 5000;
+        //Access port name from .env 
+    const port = process.env.PORT;
         
 
          //Initialize express
