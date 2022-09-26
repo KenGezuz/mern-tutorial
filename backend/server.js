@@ -3,7 +3,7 @@
         //file to hide private content 
     const dotenv = require('dotenv').config();
          //import status code error middleware
-     const {errorHandler} = require('./middleware/errorHandler');
+     const {errorHandler} = require('./middleware/errorMiddleware');
         //Access port name from .env 
         //5000 if first value not found
     const port = process.env.PORT || 5000
