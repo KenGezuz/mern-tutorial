@@ -1,9 +1,16 @@
+//access point for CRUD 
 const express = require('express');
 const router = express.Router();
+//import controller 
+const {getPost, setPost, updatePost, deletePost} = require('../controllers/milestoneController');
 
-//Access point for Get
-router.get('/', (req, res) => {
-    res.status(200).json({message: "Hellow work first output"})
-})
+//read
+router.get('/',getPost);
+//create
+router.post('/',setPost);
+//update
+router.put('/:id',updatePost);
+//delete
+router.delete('/:id', deletePost);
 
 module.exports = router;

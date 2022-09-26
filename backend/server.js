@@ -10,8 +10,7 @@
          //Initialize express
     const app = express();
 
-         //request localhost:5000/api/milestone on postman and respond with message array 
-         //points to routers for request
+         //points to routes/milestoneRoutes for create,write,update and delete
     app.use('/api/milestone',require('./routes/milestoneRoutes'));
     
          //run server and output port name
