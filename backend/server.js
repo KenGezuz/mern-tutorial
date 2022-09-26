@@ -9,6 +9,11 @@
 
          //Initialize express
     const app = express();
+         //express middleware
+         //body parser for raw Json 
+    app.use(express.json());
+         //URL encoded
+    app.use(express.urlencoded({extended : false}));
 
          //points to routes/milestoneRoutes for create,write,update and delete
     app.use('/api/milestone',require('./routes/milestoneRoutes'));

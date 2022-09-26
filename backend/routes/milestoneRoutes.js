@@ -4,13 +4,10 @@ const router = express.Router();
 //import controller 
 const {getPost, setPost, updatePost, deletePost} = require('../controllers/milestoneController');
 
-//read
-router.get('/',getPost);
-//create
-router.post('/',setPost);
-//update
-router.put('/:id',updatePost);
-//delete
-router.delete('/:id', deletePost);
+//read and create
+router.route('/').get(getPost).post(setPost);
+//update and delete
+router.route('/:id').put(updatePost).delete(deletePost);
+
 
 module.exports = router;
