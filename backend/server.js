@@ -23,9 +23,10 @@
     app.use(express.urlencoded({extended : false}));
 
          //points to routes/milestoneRoutes for create,write,update and delete
-    app.use('/api/milestone',require('./routes/milestoneRoutes'));
-
-         //use own error handlers
+    app.use('/api/milestones',require('./routes/milestoneRoutes'));
+         //user route
+      app.use('/api/users',require('./routes/userRoutes'));
+        //use own error handlers
      app.use(errorHandler);
     
          //run server and output port name
