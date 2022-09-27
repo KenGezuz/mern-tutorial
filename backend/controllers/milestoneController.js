@@ -1,11 +1,16 @@
 const asyncHandler = require('express-async-handler');
+const Milestone = require('../models/milestoneModel');
 
 //desc :   getPost
 //route : GET api/milestone
 //access : Private
 
 const getPost = asyncHandler (async (req, res) =>{
-    res.status(200).json({message: "show milestone"})
+
+    //get our milestone via model from database
+    const milestones = await Milestone.find();
+
+    res.status(200).json(milestones);
 })
 
 //desc :  setPost
@@ -17,21 +22,47 @@ const setPost = asyncHandler (async (req, res) => {
         res.status(400).json;
         throw new Error('Please add a milestone');
     }
-    res.status(200).json({message: "create milstone"})
+    /*else add text to database*/
+    
+    const milestone = await Milestone.create({
+     text: req.body.text,
+    });
+    res.status(200).json(milestone);
+
 })
 
 //desc :   updatePost
 //route : PUT api/milestone
 //access : Private
 const updatePost = asyncHandler (async (req, res) => {
-    res.status(200).json({message: `updated milestone on id: ${req.params.id}`})
+
+    const milestone = await Milestone.findById(req.params.id);
+
+    if(!milestone) {
+        res.status(400);
+        throw new Error('Milestone not found')
+    }
+
+    const updatedMilestone = await Milestone.findById(req.params.id, req.body, {
+        new: true,
+    });
+
+    res.status(200).json(updatedMilestone);
+
 })
 
 //desc :   deletePost
 //route : DELETE api/milestone
 //access : Private
 const deletePost = asyncHandler(async (req, res) => {
-    res.status(200).json({message: `milestone deleted on id: ${req.params.id}` })
+    const milestone = await Milestone.findById(req.params.id);
+    if(!milestone) {
+        res.status(400);
+        throw new Error('Milestone not found')
+    }
+
+    await milestone.remove();
+    res.status(200).json({id: req.params.id})
 })
 
 
