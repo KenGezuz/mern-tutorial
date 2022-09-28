@@ -3,12 +3,6 @@ const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
-//desc:     authenticate a user
-//route:    Post /api/users/login
-//access:   Public
-const loginUser = asyncHandler(async(req, res) => {
-    res.json({message: 'Login User'})
-})
 
 //desc:     register new user
 //route:    Post /api/users
@@ -29,7 +23,51 @@ const registerUser =  asyncHandler(async(req, res) => {
         res.status(400);
         throw new Error('User already Exists')
     }
-    res.json({message: 'Register User'})
+
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password,salt);
+
+    //Create User
+    const user = await User.create({
+        name,
+        email,
+        password : hashPassword
+    })
+
+    if(user){
+        res.status(201).json({
+            _id: user.id,
+            name: user.name,
+            email: user.email
+        })
+    }else {
+        res.status(400);
+        throw new Error('Invalid user data');
+    }
+})
+
+//desc:     authenticate a user
+//route:    Post /api/users/login
+//access:   Public
+const loginUser = asyncHandler(async(req, res) => {
+    const {email, password} = req.body;
+
+    //check for user email
+    //fetch user using email
+    const user = await User.findOne({email});
+
+    //compare user password with encrypted
+    if(user && (await bcrypt.compare(password, user.password))) {
+        res.json({
+        _id: user.id,
+        name: user.name,
+        email: user.email
+        })
+    } else {
+        res.status(400);
+        throw new Error('Invalid credentials');
+    }
 })
 
 //desc:     Get user data
